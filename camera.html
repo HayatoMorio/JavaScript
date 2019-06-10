@@ -1,0 +1,55 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Camera</title>
+</head>
+<body>
+
+  <video id="myVideo" width="640" height="480" autoplay></video>
+
+
+  <script>
+
+    let stream;
+
+    async function loadAndPlay() {
+      const video = document.getElemntById('myVideo');
+      stream = await getDeviceStream({
+        video: {width: 640, height: 320},
+        audio: false
+      });
+      video.srcObject = stream;
+    }
+
+    function stop(){
+      const video = document.getElemntById('myVideo');
+      const tracks = stream.getTracks();
+
+      tracks.forEach((track) => {
+        track.stop();
+      });
+
+      video.srcObject = null;
+    }
+
+    function getDeviceStream(option){
+      if ('getUserMedioa' in navigator.mediaDevices){
+        return navigator.mediaDevices.getUserMedia(option);
+      } else{
+        return new Promise(function(resolve, reject){
+          navigator.getUserMedia(option, resolve, reject);
+        });
+      }
+    }
+      
+
+  </script>
+
+</body>
+</html>
+
